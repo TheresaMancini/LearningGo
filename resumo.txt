@@ -1,0 +1,287 @@
+Go é fortemente tipado.
+
+go mod tidy --> remove do modulo as dependencias que não estão sendo usadas
+go get url --> baixa pacotes externos e adiciona ao modulo
+
+// Tipos de dados basicos no go
+     := faz atribuicao com inferencia de tipo
+	//Inteiros
+	//int8, int16, int32, int64 int32 tem o alias de rune
+	//usa o rune quando são variaveis que estao se referiando a caracteres alfanumericos
+	//uint8 é o byte.
+	// int o int sozinha assume a arquitetura do computador como base.
+
+	//uint - unsigned int. Int sem sinal
+   
+    // Reais
+
+	//float32 float64 numeros com virgula. Se for tipagem por inferencia assume float de acordo com arquitetura
+
+    //String cadeia de caracteres
+    //No go nao tem char. O que seria o char vai ser transformado em um numero.
+	char := 'B'
+	fmt.Println(char) // imprime o inteiro que corresponde ao valor na tabela ASC desse caracter
+
+    // Variaveis não inicializadas inicializam com valores padroes. Valores iniciais. String " ". Numericos 0, Erro nil
+
+    //para criar um erro tem que usar o pacote errors
+	var errocriado error = errors.New("Erro Interno")
+
+    // Funcoes são tipos tambem
+
+    No Go, as funcoes podem ter mais de um retorno
+    // funcao com mais de um retorno, coloca entre parenteses todos os tipos de retorno
+    // se eu não quiser usar um dos retornos coloca um _
+
+
+	// Operadores aritmeticos
+	+ - / * % (mod resto da divisao)
+
+
+	// Relacionais > < == >= <=  != // retornam true ou false
+
+	// Operadores Lógicos AND , OR, NOT
+	// && || !
+
+	// Operador unario ++ -- *= += só soma depois atribui, não tem atribuir e depois somar. 
+
+	Não usa operador ternario ( = ? : não tem como fazer isso )
+
+	//struct
+	type usuario struct {
+		nome  string
+		idade uint8
+	}
+
+	//usando 
+	var uusuario1 usuario // forma 1
+	usuario2 := usuario{"Theresa", 26} // Forma 2 inferencia
+
+// Heranca
+
+	type pessoa struct {
+	nome      string
+	sobrenome string
+	idade     uint8
+	altura    uint
+}
+
+type estudante struct {
+	pessoa // Isso aqui é uma heranca. Nao colocamos o tipo, pq o Pessoa já é o tipo
+	curso string
+	serie string
+}
+
+
+/Array é uma lista de valores
+	var array1 [5]int
+
+	array1[0] = 1
+	// outra forma de declarar
+
+	array2 := [5]string{"P1", "P2", "P3", "P4", "P5"}
+	// outra forma de declarar
+
+	array3 := [...]string{"P1", "P2", "P3"} // tamanho baseado no numero de itens passados
+
+// Slice é como se fosse um pedaço de um array. Ele aponta pra um array
+
+	slice := []int
+
+	slice := []int{1, 2, 3, 4}
+
+slice2 := array2[1:3] // primeiro indice é inclusivo e o segundo exclusivo -- Referenciando  um array que já existe
+
+// O Slice referencia um array interno
+
+// Array é uma lista de tamanho fixo e o Slice é uma lista sem tamanho fixo
+
+//Map
+usuario := map[string]string{"nome": "Pedro", "sobrenome": "Silva"}
+
+map[tipo das chaves]tipo dos valores{chave:valor}
+chave, valores tem que ser sempre do mesmo tipo
+
+map[string]string{"nome":"Joao"}
+
+outra forma
+map[string]map[string]string{
+	"chavemap1" :{
+		"chave1map2": "valor1",
+		"chave2map2": "valor2",
+	},
+}
+
+//Loops no Go
+
+no Go só usa for
+
+// loops só existe for
+
+for i<10
+for i:= 0; i<10; i++
+for _, valor := range array
+for chave, valor := range nomemap
+	/// pode iterar sobre array, slice, string (retorna ascII), map. Iterando sempre traz primeiro o indice depois o valor. Se for um map e chave, valor
+
+// funcoes de retorno nomeado
+
+func calculosMatematicos(n1, n2 int) (soma int, subtracao int)
+func nome-funcao(parametros funcao nomes e tipos) (retornos funcao nomes e tipos)
+
+//funcoes variaticas
+func soma(numeros ...int) {
+	fmt.Println(numeros)
+}
+func nome-funcao(nomevar ...tipo){
+
+}
+nome da variavel vai ser um slice daquele tipo de variavel
+
+Pode ter fucao de parametro variativo com mais de um tipo de dado, mas só pode ter 1 que seja do tipo variático. O Variático tem que ser o último
+
+func escrever(texto string, numeros ...int)
+
+//funcao anonima. Usada quando tem que encapsular algo, mas que não seria usado de novo. 
+func (){
+	///codifo
+}() chamando logo apos declarar com o ()
+
+// clausula defer. adia a execução de uma funcao até o último momento possível. Exemplo, imediatamente antes de um retorno
+
+//clausula panic e recover
+if(){}
+else{}
+panic("A média é exatamente 6") // imprime isso e mata a funcao. Antes de matar chama as funcoes que tem defer
+
+se quiser que a funcao não morra, deve usar o recover
+
+// closure
+
+	func closure() func() {
+			funcao := func() {
+			fmt.Println(texto)
+		}
+	}
+
+	funcao que retorna uma funcao
+
+//func init() 
+
+	a funcao init é uma por arquivo, main é uma por pacote. A Init é a primeira funcao inicializada pelo arquivo
+// metodos
+	declarada a struct
+
+	func (u usuario) salvar() // implementa uma funcao / metodo associado a essa struct. a esse tipo
+
+	func (u *usuario) maiorIdade() bool  // metodo que altera o "objeto"
+
+// Interface
+type forma interface {
+	// assinatura de metodos
+	area() float64
+}
+
+//  um metodo que ao inves de receber struct recebe uma interface 
+func escreverArea(f forma) {
+	fmt.Printf("A área da forma é %0.2f", f.area())
+}
+
+//para chamar escreverArea(forma) 
+
+o paarametro forma tem que ter um metodo de area() mesmo nome/ mesma assinatura/ retornar mesmo tipo
+
+// da pra usar a interface como um tipo generico 
+
+func (r retangulo) area() float64 {
+	return r.altura * r.largura
+}
+
+// Concorrencia é diferente de paralelismo.
+// Paralelismo. Cada tarefa em um nucleo, estão sendo executadas ao mesmo tempo
+// Concorrencia não necessariamente está acontecendo ao mesmo tempo. Elas podem estar revezando. Não espera uma acabar pra começar a outra. 
+
+//goroutine
+
+
+coloca a palavra go na frente da chamda da funcao. ela faz com que eu começe a executar o proximo processo, sem precisar esperar o atual terminar
+
+// wait group
+
+var waitGroup sync.WaitGroup -- variavel do tipo sync.WautGroup. Sync é um pacote do Go
+
+waitGroup.Add(2) // add o numero de rotinas que vao estar nesse grupo
+
+waitGroup.Done() // pra dizer que a rotina acabou e fazer contagem 
+
+waitGroup.Wait() // indicar que deve esperar até a contagem dar rotinas estar em 0. 2,1,0 segue o código
+
+// Canal
+Canal envia e recebe um dado 
+
+mensagem := <-canal // Canal ta esperando receber um valor, e quando receber vai colocar na variavel mensagem. Isso faz esperar o canal receber, mesmo tento dado o go routine. Permite sincronizar
+
+canal <- texto  /// Canal recebendo o valor mensagem
+// Quando o Canal receber o valor. O valor vai ser passado para a variavel que vai receber. 
+
+// o canal precisa esperar dado se ainda for receber. Se ficar esperando e não tiver quem envie o dado, vai dar deadlock
+
+//verificar canal aberto e fechado para evitar deadlock
+
+func main() { // Usa canais em funcoes separadas, se usar na mesma funcao pode dar deadlock
+	canal := make(chan string)
+
+	canal <- "Olá Mundo" // Enviei o Dado fica travado aqui esperando alguem receber
+	mensagem := <-canal  // Nunca chegou nessa linha
+	fmt.Println(mensagem)
+}
+
+// Canais com buffer 
+// específica uma capacidade para esse canal
+
+Se quiser usar o canal na mesma funcao, precisa usaar canal com buffer
+
+func main() { // Aqui funciona pq o canal tem capacidade 2. Só bloqueia quando atinge a capacidade dele. Não precisa esperar alguém receber pq tem buffer
+	canal := make(chan string, 2)
+
+	canal <- "Olá Mundo" // Enviei o Dado fica travado aqui esperando alguem receber
+	mensagem := <-canal  // Nunca chegou nessa linha
+	fmt.Println(mensagem)
+}
+
+Select voltado ao uso de concorrencia (go rotines). Se tem dois canais, para um canal não "perder tempo" esperando o segundo canal receber a mensagem, pode usar o select. 
+
+
+func worker(tarefas <-chan int, resultados chan <- int) {
+	passando assim a funçaõ sabe que tarefas é um canal que só envia dados e que o canl resultados é um canal que só recebe resultados
+
+padrao de concorrencia 
+
+Generator
+
+esconder a omplexidade do canal em uma funcao.
+
+Multiplexador - juntar dois ou mais canais m um unico canal
+
+Testes - 
+Criar função que testa uma aplicação para verificar se chamando a função da certo. 
+
+
+
+go get go@1.20 -- paraa fazer o downgrade pra versão 1.20 e todos os modulos ficarem no 20 .
+
+go work use .\15-TestesAutomatizados\ -- para acrescentar workspace 
+
+As funções de Teste ficam num arquivo separado. 
+Usa um pacote de teste do go 
+
+// Teste Unitario
+// Testa a menor unidade do código. Testa Apenas uma funcao
+
+// Assinatura de a funcao de teste. 
+TestNomeDaFuncao
+o parametro é um ponteiro para testint.T
+
+func TestTipoDeEndereco(t *testing.T){
+
+}
